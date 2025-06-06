@@ -26,8 +26,7 @@ pipeline {
             steps {
                 echo 'Aquí puedes ejecutar scripts, compilar o correr tests.'
                  sh 'ls -la'
-            }
-            steps {
+
                 echo 'Contenido de backend_repo:'
                 dir('backend_repo') {
                     sh 'ls -la'
@@ -37,9 +36,13 @@ pipeline {
                 dir('frontend_repo') {
                     sh 'ls -la'
                 }
+        
+
+
+            }
+
         }
-    }
-        }  
+          
         // stage('Construir imágenes Docker') {
         //     steps {
         //         sh 'docker-compose build'
