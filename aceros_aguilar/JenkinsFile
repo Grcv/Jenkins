@@ -1,17 +1,27 @@
 pipeline {
     agent any
     stages{
-        stage("Saludo 1"){
+        stage("Comenzando despliegue"){
             steps{
-                echo "Hola Desde saludo 1"   
+                echo "Comenzando despliegue"   
             }
         }
-        stage("Saludo 2"){
-            steps{
-                echo "Hola Desde saludo 2,paso 1"   
-                echo "Hola Desde saludo 2,paso 2"
+        stage('Clonar Repositorios Secundarios') {
+            steps {
+                dir('repo1') {
+                    git url: 'https://github.com/Grcv/aceros_backend.git', branch: 'main'
+                }
+                dir('repo2') {
+                    git url: 'https://github.com/Grcv/aceros_ui.git', branch: 'main'
+                }
+            
             }
-        } 
-        
+        }   
+        stage('Build/Test') {
+            steps {
+                echo 'Aquí puedes ejecutar scripts, compilar o correr tests.'
+            }
+        }        
+
     }
 }
