@@ -55,15 +55,16 @@ pipeline {
         //         sh 'docker-compose up -d'
         //     }
         // } 
-
-        post {
-            success {
-                echo '✅ Despliegue exitoso.'
-            }
-            failure {
-                echo '❌ Fallo durante el despliegue.'
-            }
-        }     
+   
 
     }
+    post {
+        success {
+            echo '✅ Despliegue exitoso.'
+        }
+        failure {
+            echo '❌ Fallo durante el despliegue.'
+        }
+    }  
+
 }
