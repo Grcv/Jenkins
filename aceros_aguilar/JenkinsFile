@@ -45,7 +45,7 @@ pipeline {
           
         stage('Construir imágenes Docker') {
             steps {
-                sh 'docker-compose build'
+                sh 'docker compose build'
             }
         }
 
@@ -54,7 +54,16 @@ pipeline {
         //         sh 'docker-compose down'
         //         sh 'docker-compose up -d'
         //     }
-        // }      
+        // } 
+
+        post {
+            success {
+                echo '✅ Despliegue exitoso.'
+            }
+            failure {
+                echo '❌ Fallo durante el despliegue.'
+            }
+        }     
 
     }
 }
