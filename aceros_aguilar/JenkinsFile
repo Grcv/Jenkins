@@ -8,10 +8,10 @@ pipeline {
         }
         stage('Clonar Repositorios Secundarios') {
             steps {
-                dir('repo1') {
+                dir('backend') {
                     git url: 'https://github.com/Grcv/aceros_backend.git', branch: 'main'
                 }
-                dir('repo2') {
+                dir('frontend') {
                     git url: 'https://github.com/Grcv/aceros_ui.git', branch: 'main'
                 }
             
