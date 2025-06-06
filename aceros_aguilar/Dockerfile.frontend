@@ -1,7 +1,7 @@
 FROM node:18 AS build
 
 WORKDIR /app
-COPY frontend/ /app
+COPY frontend_repo/aceros/ /app
 RUN npm install
 RUN npm run build --prod
 

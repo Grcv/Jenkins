@@ -2,11 +2,12 @@ FROM python:3.10
 
 WORKDIR /app
 
-COPY backend/ /app
+COPY backend_repo/ /app
 RUN pip install pipenv
 RUN pipenv install 
-RUN pipenv install
-RUN pip install -r requirements.txt
+RUN pipenv shell
+# RUN pip install -r requirements.txt
 
 EXPOSE 5000
+RUN cd backend
 CMD ["python", "app.py"]
