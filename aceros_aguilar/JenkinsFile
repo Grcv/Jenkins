@@ -1,6 +1,11 @@
 pipeline {
     agent any
     stages{
+        stage('Limpiar workspace') {
+            steps {
+                deleteDir() // Esto borra todo el contenido del workspace
+            }
+        }
         stage("Comenzando despliegue"){
             steps{
                 echo "Comenzando despliegue"   
