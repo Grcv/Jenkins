@@ -45,7 +45,7 @@ pipeline {
           
         stage('Construir imágenes Docker') {
             steps {
-                
+                sh 'echo "Ruta actual:" && pwd'
                 sh 'ls -la'
                 // sh 'docker compose build'
             }
