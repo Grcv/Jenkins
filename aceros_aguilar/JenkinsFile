@@ -20,6 +20,7 @@ pipeline {
         }   
         stage('Move files') {
             steps {
+                sh 'ls -la'
                 sh 'mkdir app'
                 sh 'mkdir  app/frontend'
                 sh 'mkdir  app/backend'
