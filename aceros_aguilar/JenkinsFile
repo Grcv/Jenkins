@@ -23,9 +23,10 @@ pipeline {
                 sh 'mkdir app'
                 sh 'mkdir  app/frontend'
                 sh 'mkdir  app/backend'
-                sh 'cp aceros_aguilar/deployment/Dockerfile.backend aceros_aguilar/deployment/Dockerfile.frontend aceros_aguilar/deployment/docker-compose.yml app/'
+                sh 'cp aceros_aguilar/docker-compose.yml .dockerignore app/'
+                sh 'cp -r aceros_aguilar/nginx/ '
                 sh 'cp  frontend_repo/aceros/* app/frontend/'
-                sh 'cp -r  backend_repo/* app/backend/'
+                sh 'cp -r  backend_repo/backend/* app/backend/'
                 sh 'ls -la app/'
 
 
@@ -35,7 +36,6 @@ pipeline {
           
         stage('Construir imágenes Docker') {
             steps {
-                sh 'ls aceros_aguilar/deployment/*'
                 sh 'ls -la'
                 // sh 'docker compose build'
             }
