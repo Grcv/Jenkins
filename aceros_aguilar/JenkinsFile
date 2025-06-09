@@ -18,19 +18,15 @@ pipeline {
             
             }
         }   
-        stage('Build/Test') {
+        stage('Move files') {
             steps {
-
-                echo 'Contenido de backend_repo:'
-                dir('backend_repo') {
-                    sh 'ls -la'
-                }
-
-                echo 'Contenido de frontend_repo:'
-                dir('frontend_repo') {
-                    sh 'ls -la'
-                }
-        
+                sh 'mkdir app'
+                sh 'mkdir  app/frontend'
+                sh 'mkdir  app/backend'
+                sh 'cp aceros_aguilar/deployment/Dockerfile.backend aceros_aguilar/deployment/Dockerfile.frontend aceros_aguilar/deployment/docker-compose.yml app/'
+                sh 'cp  aceros_ui/aceros/* app/frontend/'
+                sh 'cp  aceros_backend/* app/backend/'
+                sh 'ls -la app/'
 
 
             }
