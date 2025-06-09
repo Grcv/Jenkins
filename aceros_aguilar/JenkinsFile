@@ -39,7 +39,7 @@ pipeline {
           
         stage('Construir imágenes Docker') {
             steps {
-                sh 'cd aceros_aguilar'
+                sh 'ls aceros_aguilar/deployment/*'
                 sh 'ls -la'
                 // sh 'docker compose build'
             }
