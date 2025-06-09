@@ -20,8 +20,6 @@ pipeline {
         }   
         stage('Build/Test') {
             steps {
-                echo 'Aquí puedes ejecutar scripts, compilar o correr tests.'
-                 sh 'ls -la'
 
                 echo 'Contenido de backend_repo:'
                 dir('backend_repo') {
@@ -41,8 +39,7 @@ pipeline {
           
         stage('Construir imágenes Docker') {
             steps {
-                sh 'echo "Ruta actual:" && pwd'
-                sh 'ls  -la /var/jenkins_home/workspace/aceros_aguilar/'
+
                 sh 'ls -la'
                 // sh 'docker compose build'
             }
