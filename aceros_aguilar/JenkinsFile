@@ -45,6 +45,7 @@ pipeline {
           
         stage('Construir imágenes Docker') {
             steps {
+                dir('aceros_build')
                 sh 'ls -la'
                 sh 'docker compose build'
             }
