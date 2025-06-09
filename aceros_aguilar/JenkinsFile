@@ -47,20 +47,17 @@ pipeline {
         //         sh 'docker-compose up -d'
         //     }
         // } 
-
-        stage('Limpiar workspace') {
-            steps {
-                deleteDir() // Esto borra todo el contenido del workspace
-            }
-        }   
+  
 
     }
     post {
         success {
             echo '✅ Despliegue exitoso.'
+            deleteDir()
         }
         failure {
             echo '❌ Fallo durante el despliegue.'
+            deleteDir()
         }
     }  
 
