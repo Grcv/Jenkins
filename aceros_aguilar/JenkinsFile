@@ -49,6 +49,7 @@ pipeline {
 
     stage('Desplegar') {
         steps {
+            sh 'ls -la /var/jenkins_home/workspace/aceros_aguilar/aceros_build/app/nginx/'
             dir('app') {
                 sh 'docker compose down'
                 sh 'docker compose up -d'
