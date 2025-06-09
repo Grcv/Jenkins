@@ -25,7 +25,7 @@ pipeline {
                 sh 'mkdir  app/backend'
                 sh 'cp aceros_aguilar/deployment/Dockerfile.backend aceros_aguilar/deployment/Dockerfile.frontend aceros_aguilar/deployment/docker-compose.yml app/'
                 sh 'cp  frontend_repo/aceros/* app/frontend/'
-                sh 'cp  backend_repo/* app/backend/'
+                sh 'cp -r  backend_repo/* app/backend/'
                 sh 'ls -la app/'
 
 
