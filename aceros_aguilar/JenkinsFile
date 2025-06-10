@@ -62,11 +62,11 @@ pipeline {
     post {
         success {
             echo '✅ Despliegue exitoso.'
-            deleteDir()
+            // deleteDir()
         }
         failure {
             echo '❌ Fallo durante el despliegue.'
-            deleteDir()
+            // deleteDir()
         }
     }  
 
