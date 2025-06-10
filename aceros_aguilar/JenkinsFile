@@ -24,11 +24,9 @@ pipeline {
                 sh 'mkdir app'
                 sh 'mkdir  app/frontend'
                 sh 'mkdir  app/backend'
-                sh 'mkdir  app/nginx'
                 sh 'cp aceros_aguilar/docker-compose.yml app/'
                 sh 'cp -r frontend_repo/aceros/* app/frontend/'
                 sh 'cp -r backend_repo/backend/* app/backend/'
-                sh 'cp -r aceros_aguilar/nginx/* app/nginx/'
                 sh 'ls -la app/'
                 sh 'ls -la app/frontend/'
                 sh 'ls -la app/backend/'
@@ -49,7 +47,6 @@ pipeline {
 
     stage('Desplegar') {
         steps {
-            sh 'ls -la /var/jenkins_home/workspace/aceros_aguilar/aceros_build/app/nginx/'
             dir('app') {
                 sh 'docker compose down'
                 sh 'docker compose up -d'
