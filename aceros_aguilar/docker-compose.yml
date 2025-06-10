@@ -7,9 +7,11 @@ services:
     container_name: frontend
     restart: always
     ports:
-      - "80:80"
+      - "4000:4000"  # SSR con Express corre en el puerto 4000
     depends_on:
       - backend
+    networks:
+      - app-net
 
   backend:
     build:
@@ -18,3 +20,9 @@ services:
     restart: always
     ports:
       - "8000:8000"
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge
