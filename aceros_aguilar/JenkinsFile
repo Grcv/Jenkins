@@ -38,35 +38,35 @@ pipeline {
 
         }
           
-    // stage('Construir imágenes Docker') {
-    //     steps {
-    //         dir('app') {
-    //             sh 'ls -la'
-    //             sh 'docker compose build'
-    //         }
-    //     }
-    // }
+    stage('Construir imágenes Docker') {
+        steps {
+            dir('app') {
+                sh 'ls -la'
+                sh 'docker compose build'
+            }
+        }
+    }
 
-    // stage('Desplegar') {
-    //     steps {
-    //         sh 'ls -la /var/jenkins_home/workspace/aceros_aguilar/aceros_build/app/nginx/'
-    //         dir('app') {
-    //             sh 'docker compose down'
-    //             sh 'docker compose up -d'
-    //         }
-    //     }
-    // }
+    stage('Desplegar') {
+        steps {
+            sh 'ls -la /var/jenkins_home/workspace/aceros_aguilar/aceros_build/app/nginx/'
+            dir('app') {
+                sh 'docker compose down'
+                sh 'docker compose up -d'
+            }
+        }
+    }
   
 
     }
     post {
         success {
             echo '✅ Despliegue exitoso.'
-            // deleteDir()
+            deleteDir()
         }
         failure {
             echo '❌ Fallo durante el despliegue.'
-            // deleteDir()
+            deleteDir()
         }
     }  
 
