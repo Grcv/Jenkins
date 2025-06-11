@@ -49,8 +49,8 @@ pipeline {
                     script {
                         docker.withRegistry(DOCKER_REGISTRY, DOCKER_CREDENTIALS_ID) {
                             sh """
-                                docker tag frontend ${DOCKER_USER}/aceros_frontend:${TAG}
-                                docker tag backend ${DOCKER_USER}/aceros_backend:${TAG}
+                                docker tag app-frontend ${DOCKER_USER}/aceros_frontend:${TAG}
+                                docker tag app-backend ${DOCKER_USER}/aceros_backend:${TAG}
                                 docker push ${DOCKER_USER}/aceros_frontend:${TAG}
                                 docker push ${DOCKER_USER}/aceros_backend:${TAG}
                             """
