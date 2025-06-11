@@ -6,11 +6,11 @@ pipeline {
         DOCKER_CREDENTIALS_ID = 'dockerhub'
         TAG = "${env.BUILD_NUMBER}"
     }
-    stages{
+    stages {
 
         stage("Comenzando despliegue"){
             steps{
-                echo "Comenzando despliegue"   
+                echo "Comenzando construccion y subida de imagenes"
             }
         }
         stage('Clonar Repositorios Secundarios') {
@@ -21,9 +21,8 @@ pipeline {
                 dir('frontend_repo') {
                     git credentialsId: 'github_credentials',url: 'https://github.com/Grcv/aceros_ui.git', branch: 'main'
                 }
-            
             }
-        }   
+        }
         stage('Move files') {
             steps {
                 sh '''
@@ -34,46 +33,42 @@ pipeline {
                     cp -r backend_repo/backend/* app/backend/
                 '''
             }
-
         }
-          
-    stage('Construir imágenes Docker') {
-        steps {
-            dir('app') {
-                sh 'docker compose build'
+
+        stage('Construir imágenes Docker') {
+            steps {
+                dir('app') {
+                    sh 'docker compose build'
+                }
             }
         }
-    }
 
-    stage('Login y Push a Docker Hub') {
-        steps {
-            dir('app') {
-                script {
-                    docker.withRegistry(DOCKER_REGISTRY, DOCKER_CREDENTIALS_ID) {
-                        // Etiquetar y subir manualmente cada imagen
-                        sh """
-                            # Opcional: también subir como 'latest'
-                            docker tag app_frontend ${DOCKER_USER}/aceros_frontend:latest
-                            docker tag app_backend ${DOCKER_USER}/aceros_backend:latest
-                            docker push ${DOCKER_USER}/aceros_frontend:latest
-                            docker push ${DOCKER_USER}/aceros_backend:latest
-                        """
+        stage('Login y Push a Docker Hub') {
+            steps {
+                dir('app') {
+                    script {
+                        docker.withRegistry(DOCKER_REGISTRY, DOCKER_CREDENTIALS_ID) {
+                            sh """
+                                docker tag frontend ${DOCKER_USER}/aceros_frontend:${TAG}
+                                docker tag backend ${DOCKER_USER}/aceros_backend:${TAG}
+                                docker push ${DOCKER_USER}/aceros_frontend:${TAG}
+                                docker push ${DOCKER_USER}/aceros_backend:${TAG}
+                            """
+                        }
                     }
                 }
             }
         }
-    }  
 
     }
     post {
         success {
-            echo '✅ Construccion y subir imagen a docker hub exitosa.'
+            echo '✅ Construcción y subida a Docker Hub exitosa.'
             deleteDir()
         }
         failure {
-            echo '❌ Fallo construccion y subir imagen a docker hub.'
+            echo '❌ Falló la construcción o subida a Docker Hub.'
             deleteDir()
         }
-    }  
-
+    }
 }
