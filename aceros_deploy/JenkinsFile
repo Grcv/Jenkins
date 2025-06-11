@@ -1,0 +1,55 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'REMOTE_HOST', defaultValue: '192.168.1.100', description: 'IP del servidor remoto para desplegar')
+    }
+
+    environment {
+        DOCKER_USER = 'gerardocastro'
+        BUILD_TAG = "aceros"
+        SSH_CREDENTIALS_ID = 'remote_ssh'
+    }
+
+    stages {
+        stage('Desplegar con docker-compose en servidor remoto') {
+            steps {
+                sshagent (credentials: [SSH_CREDENTIALS_ID]) {
+                    sh """
+                    ssh -o StrictHostKeyChecking=no ubuntu@${params.REMOTE_HOST} '
+                        # Crear carpeta del proyecto si no existe
+                        mkdir -p ~/aceros_app &&
+                        cd ~/aceros_app &&
+
+                        # Descargar docker-compose.yml desde un repo o copiarlo de algún lugar,
+                        # aquí asumo que ya está en el servidor, si no, tendrías que copiarlo (scp)
+                        
+                        # Hacer pull de las imágenes con los tags correctos
+                        docker pull ${DOCKER_USER}/${BUILD_TAG}_frontend &&
+                        docker pull ${DOCKER_USER}/${BUILD_TAG}_backend &&
+
+                        # Exportar variables para docker-compose, si usas etiquetas dinámicas
+                        export IMAGE_FRONTEND=${DOCKER_USER}/${BUILD_TAG}_frontend &&
+                        export IMAGE_BACKEND=${DOCKER_USER}/${BUILD_TAG}_backend &&
+
+                        # Parar y remover los servicios anteriores
+                        docker-compose down || true &&
+
+                        # Ejecutar docker-compose con las imágenes descargadas
+                        IMAGE_FRONTEND=${DOCKER_USER}/${BUILD_TAG}_frontend IMAGE_BACKEND=${DOCKER_USER}/${BUILD_TAG}_backend docker-compose up -d
+                    '
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Despliegue remoto con docker-compose completado en ${params.REMOTE_HOST}."
+        }
+        failure {
+            echo "❌ Falló el despliegue remoto."
+        }
+    }
+}

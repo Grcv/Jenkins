@@ -1,5 +1,11 @@
 pipeline {
     agent any
+    environment {
+        DOCKER_USER = 'gerardocastro'
+        DOCKER_REGISTRY = 'https://index.docker.io/v1/'
+        DOCKER_CREDENTIALS_ID = 'dockerhub'
+        TAG = "${env.BUILD_NUMBER}"
+    }
     stages{
 
         stage("Comenzando despliegue"){
@@ -20,18 +26,13 @@ pipeline {
         }   
         stage('Move files') {
             steps {
-                sh 'ls -la'
-                sh 'mkdir app'
-                sh 'mkdir  app/frontend'
-                sh 'mkdir  app/backend'
-                sh 'cp aceros_aguilar/docker-compose.yml app/'
-                sh 'cp -r frontend_repo/aceros/* app/frontend/'
-                sh 'cp -r backend_repo/backend/* app/backend/'
-                sh 'ls -la app/'
-                sh 'ls -la app/frontend/'
-                sh 'ls -la app/backend/'
-
-
+                sh '''
+                    mkdir -p app/frontend
+                    mkdir -p app/backend
+                    cp aceros_aguilar/docker-compose.yml app/
+                    cp -r frontend_repo/aceros/* app/frontend/
+                    cp -r backend_repo/backend/* app/backend/
+                '''
             }
 
         }
@@ -39,30 +40,38 @@ pipeline {
     stage('Construir imágenes Docker') {
         steps {
             dir('app') {
-                sh 'ls -la'
                 sh 'docker compose build'
             }
         }
     }
 
-    stage('Desplegar') {
+    stage('Login y Push a Docker Hub') {
         steps {
             dir('app') {
-                sh 'docker compose down'
-                sh 'docker compose up -d'
+                script {
+                    docker.withRegistry(DOCKER_REGISTRY, DOCKER_CREDENTIALS_ID) {
+                        // Etiquetar y subir manualmente cada imagen
+                        sh """
+                            # Opcional: también subir como 'latest'
+                            docker tag app_frontend ${DOCKER_USER}/aceros_frontend:latest
+                            docker tag app_backend ${DOCKER_USER}/aceros_backend:latest
+                            docker push ${DOCKER_USER}/aceros_frontend:latest
+                            docker push ${DOCKER_USER}/aceros_backend:latest
+                        """
+                    }
+                }
             }
         }
-    }
-  
+    }  
 
     }
     post {
         success {
-            echo '✅ Despliegue exitoso.'
+            echo '✅ Construccion y subir imagen a docker hub exitosa.'
             deleteDir()
         }
         failure {
-            echo '❌ Fallo durante el despliegue.'
+            echo '❌ Fallo construccion y subir imagen a docker hub.'
             deleteDir()
         }
     }  

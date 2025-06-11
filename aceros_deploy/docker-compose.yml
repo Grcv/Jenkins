@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: ${IMAGE_FRONTEND}
+    container_name: frontend
+    restart: always
+    ports:
+      - "4000:4000"
+    depends_on:
+      - backend
+    networks:
+      - app-net
+
+  backend:
+    image: ${IMAGE_BACKEND}
+    container_name: backend
+    restart: always
+    ports:
+      - "8000:8000"
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge
