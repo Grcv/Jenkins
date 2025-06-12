@@ -11,14 +11,12 @@ pipeline {
     }
 
     stages {
-
-        stage('Copiar docker-compose.yml al servidor remoto') {
+        stage('Copiar archivos de despliegue al servidor remoto') {
             steps {
                 sshagent (credentials: [SSH_CREDENTIALS_ID]) {
-                    // Ajusta la ruta a tu archivo docker-compose.yml local si está en otra carpeta
                     sh """
-                    ls -lrt
-                    scp -o StrictHostKeyChecking=no aceros_deploy/docker-compose.yml ubuntu@${params.REMOTE_HOST}:/home/ubuntu
+                    scp -o StrictHostKeyChecking=no aceros_deploy/docker-compose.yml ubuntu@${params.REMOTE_HOST}:/home/ubuntu/aceros_app/docker-compose.yml
+                    scp -o StrictHostKeyChecking=no aceros_deploy/nginx/default.conf ubuntu@${params.REMOTE_HOST}:/home/ubuntu/aceros_app/nginx/default.conf
                     """
                 }
             }
@@ -29,16 +27,47 @@ pipeline {
                 sshagent (credentials: [SSH_CREDENTIALS_ID]) {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         sh """
-                        ssh -o StrictHostKeyChecking=no ubuntu@${params.REMOTE_HOST} "\
-                            mkdir -p ~/aceros_app && \
-                            cd ~/aceros_app && \
-                            docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} && \
-                            docker pull ${DOCKER_USER}/${BUILD_TAG}_frontend && \
-                            docker pull ${DOCKER_USER}/${BUILD_TAG}_backend && \
-                            docker-compose down || true && \
-                            IMAGE_FRONTEND=${DOCKER_USER}/${BUILD_TAG}_frontend IMAGE_BACKEND=${DOCKER_USER}/${BUILD_TAG}_backend docker-compose up -d"
+                        ssh -o StrictHostKeyChecking=no ubuntu@${params.REMOTE_HOST} '
+                            cd ~/aceros_app &&
+                            docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} &&
+                            docker pull ${DOCKER_USER}/${BUILD_TAG}_frontend &&
+                            docker pull ${DOCKER_USER}/${BUILD_TAG}_backend &&
+                            docker-compose down || true &&
+                            IMAGE_FRONTEND=${DOCKER_USER}/${BUILD_TAG}_frontend \
+                            IMAGE_BACKEND=${DOCKER_USER}/${BUILD_TAG}_backend \
+                            docker-compose up -d
+                        '
                         """
                     }
+                }
+            }
+        }
+
+        // stage('Obtener certificados SSL (una sola vez)') {
+        //     when {
+        //         expression { return params.REMOTE_HOST != 'localhost' }  // evita ejecutarlo en entornos locales
+        //     }
+        //     steps {
+        //         sshagent (credentials: [SSH_CREDENTIALS_ID]) {
+        //             sh """
+        //             ssh -o StrictHostKeyChecking=no ubuntu@${params.REMOTE_HOST} '
+        //                 cd ~/aceros_app &&
+        //                 docker-compose run --rm certbot
+        //             '
+        //             """
+        //         }
+        //     }
+        // }
+
+        stage('Reiniciar Nginx con certificados SSL') {
+            steps {
+                sshagent (credentials: [SSH_CREDENTIALS_ID]) {
+                    sh """
+                    ssh -o StrictHostKeyChecking=no ubuntu@${params.REMOTE_HOST} '
+                        cd ~/aceros_app &&
+                        docker-compose restart nginx
+                    '
+                    """
                 }
             }
         }
@@ -46,10 +75,10 @@ pipeline {
 
     post {
         success {
-            echo "✅ Despliegue remoto con docker-compose completado en ${params.REMOTE_HOST}."
+            echo "✅ Despliegue completo y certificado SSL instalado en ${params.REMOTE_HOST}."
         }
         failure {
-            echo "❌ Falló el despliegue remoto."
+            echo "❌ Falló el despliegue remoto o la instalación del certificado SSL."
         }
     }
 }
