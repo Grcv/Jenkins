@@ -18,7 +18,7 @@ pipeline {
                     // Ajusta la ruta a tu archivo docker-compose.yml local si está en otra carpeta
                     sh """
                     ls -lrt
-                    scp -o StrictHostKeyChecking=no docker-compose.yml ubuntu@${params.REMOTE_HOST}:/home/ubuntu
+                    scp -o StrictHostKeyChecking=no aceros_deploy/docker-compose.yml ubuntu@${params.REMOTE_HOST}:/home/ubuntu
                     """
                 }
             }
