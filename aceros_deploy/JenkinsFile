@@ -52,6 +52,8 @@ pipeline {
                 sshagent (credentials: [SSH_CREDENTIALS_ID]) {
                     sh """
                     ssh -o StrictHostKeyChecking=no ubuntu@${params.REMOTE_HOST} '
+                        IMAGE_FRONTEND=${DOCKER_USER}/${BUILD_TAG}_frontend \
+                        IMAGE_BACKEND=${DOCKER_USER}/${BUILD_TAG}_backend \
                         cd ~/aceros_app &&
                         docker-compose run --rm certbot
                     '
