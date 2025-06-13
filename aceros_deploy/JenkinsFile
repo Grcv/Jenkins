@@ -43,21 +43,21 @@ pipeline {
             }
         }
 
-        // stage('Obtener certificados SSL (una sola vez)') {
-        //     when {
-        //         expression { return params.REMOTE_HOST != 'localhost' }  // evita ejecutarlo en entornos locales
-        //     }
-        //     steps {
-        //         sshagent (credentials: [SSH_CREDENTIALS_ID]) {
-        //             sh """
-        //             ssh -o StrictHostKeyChecking=no ubuntu@${params.REMOTE_HOST} '
-        //                 cd ~/aceros_app &&
-        //                 docker-compose run --rm certbot
-        //             '
-        //             """
-        //         }
-        //     }
-        // }
+        stage('Obtener certificados SSL (una sola vez)') {
+            when {
+                expression { return params.REMOTE_HOST != 'localhost' }  // evita ejecutarlo en entornos locales
+            }
+            steps {
+                sshagent (credentials: [SSH_CREDENTIALS_ID]) {
+                    sh """
+                    ssh -o StrictHostKeyChecking=no ubuntu@${params.REMOTE_HOST} '
+                        cd ~/aceros_app &&
+                        docker-compose run --rm certbot
+                    '
+                    """
+                }
+            }
+        }
 
         stage('Reiniciar Nginx con certificados SSL') {
             steps {
