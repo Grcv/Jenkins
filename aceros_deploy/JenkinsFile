@@ -55,6 +55,7 @@ pipeline {
                         IMAGE_FRONTEND=${DOCKER_USER}/${BUILD_TAG}_frontend \
                         IMAGE_BACKEND=${DOCKER_USER}/${BUILD_TAG}_backend \
                         cd ~/aceros_app &&
+                        chmod +x nginx/startup.sh
                         docker-compose run --rm certbot
                     '
                     """
