@@ -15,8 +15,11 @@ services:
   backend:
     image: ${IMAGE_BACKEND}
     environment:
+      - SMTP_SERVER=${SMTP_SERVER}
+      - SMTP_PORT=${SMTP_PORT}
       - ZOHO_USER=${ZOHO_USER}
       - ZOHO_PASS=${ZOHO_PASS}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
     container_name: backend
     restart: always
     expose:

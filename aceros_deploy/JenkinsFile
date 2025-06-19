@@ -2,7 +2,10 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'REMOTE_HOST', defaultValue: '192.168.1.100', description: 'IP del servidor remoto para desplegar')
+        string(name: 'REMOTE_HOST', defaultValue: 'ec2-54-209-122-49.compute-1.amazonaws.com', description: 'IP del servidor remoto para desplegar')
+        string(name: 'SMTP_SERVER', defaultValue: 'smtp.zoho.com', description: 'Dominio servidor de email')
+        number(name: 'SMTP_PORT', defaultValue: 587, description: 'Puerto servidor de email')
+        string(name: 'ADMIN_EMAIL', defaultValue: 'acerosaguilar16@gmail.com', description: 'Email de administrador')
     }
 
     environment {
@@ -36,8 +39,11 @@ pipeline {
                                 docker pull ${DOCKER_USER}/${BUILD_TAG}_backend &&
                                 IMAGE_FRONTEND=${DOCKER_USER}/${BUILD_TAG}_frontend \
                                 IMAGE_BACKEND=${DOCKER_USER}/${BUILD_TAG}_backend \
-                                ZOHO_USER=${ZOHO_USER} \
-                                ZOHO_PASS=${ZOHO_PASS} \
+                                SMTP_SERVER=${params.SMTP_SERVER} \
+                                SMTP_PORT=${params.SMTP_PORT} \
+                                SMTP_USER=${ZOHO_USER} \
+                                SMTP_PASSWORD=${ZOHO_PASS} \
+                                ADMIN_EMAIL=${params.ADMIN_EMAIL} \
                                 docker-compose up -d
                                 '
                             """
