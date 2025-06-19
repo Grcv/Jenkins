@@ -63,19 +63,19 @@ pipeline {
         //     }
         // }
 
-        stage('Reiniciar Nginx con certificados SSL') {
-            steps {
-                sshagent (credentials: [SSH_CREDENTIALS_ID]) {
-                    sh """
-                    ssh -o StrictHostKeyChecking=no ubuntu@${params.REMOTE_HOST} '
-                        cd ~/aceros_app &&
-                        docker-compose restart nginx
-                    '
-                    """
-                }
-            }
-        }
-    }
+    //     stage('Reiniciar Nginx con certificados SSL') {
+    //         steps {
+    //             sshagent (credentials: [SSH_CREDENTIALS_ID]) {
+    //                 sh """
+    //                 ssh -o StrictHostKeyChecking=no ubuntu@${params.REMOTE_HOST} '
+    //                     cd ~/aceros_app &&
+    //                     docker-compose restart nginx
+    //                 '
+    //                 """
+    //             }
+    //         }
+    //     }
+    // }
 
     post {
         success {
