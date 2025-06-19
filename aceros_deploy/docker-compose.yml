@@ -14,6 +14,9 @@ services:
 
   backend:
     image: ${IMAGE_BACKEND}
+    environment:
+      - ZOHO_USER=${ZOHO_USER}
+      - ZOHO_PASS=${ZOHO_PASS}
     container_name: backend
     restart: always
     expose:
