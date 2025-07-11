@@ -4,7 +4,22 @@ pipeline {
         TAG = "${env.BUILD_NUMBER}"
     }
     stages {
-
+        stage('Eliminar Screen ') {
+            steps {
+                dir('app') {
+                    sh 'screen -S ngrok -X quit'
+                }
+            }
+        }
+        stage('Eliminar contenedores') {
+            steps {
+                dir('app') {
+                    sh '''docker ps -a | grep -v jenkins-docker | awk '{print $1}' | xargs docker rm
+                    docker rmi $(docker images -q)
+                    '''
+                }
+            }
+        }
         stage("Comenzando despliegue") {
             steps {
                 echo "Comenzando construcción de imágenes y despliegue local"
@@ -46,6 +61,23 @@ pipeline {
             steps {
                 dir('app') {
                     sh 'docker compose up -d'
+                }
+            }
+        }
+        stage('Ejecutar ngrok') {
+            steps {
+                dir('app') {
+                    sh '''
+                        # Iniciar screen y ejecutar ngrok redirigiendo la salida
+                        screen -dmS ngrok bash -c "ngrok http 5000 > ngrok.log 2>&1"
+                
+                        # Esperar un momento para que ngrok arranque
+                        sleep 5
+                
+                        # Imprimir la salida de ngrok
+                        echo "Salida de ngrok:"
+                        cat ngrok.log
+                    '''
                 }
             }
         }
