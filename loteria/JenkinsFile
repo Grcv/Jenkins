@@ -17,13 +17,12 @@ pipeline {
                 }
             }
         }
-        stage('Eliminar contenedores') {
+        stage('Limpiar contenedores Docker') {
             steps {
-                dir('app') {
-                    sh '''docker ps -a | grep -v jenkins-docker | awk '{print $1}' | xargs docker rm
-                    docker rmi $(docker images -q)
-                    '''
-                }
+                sh '''
+                    docker ps -a | grep -v jenkins-docker | awk 'NR>1 {print $1}' | xargs -r docker stop
+                    docker ps -a | grep -v jenkins-docker | awk 'NR>1 {print $1}' | xargs -r docker rm
+                '''
             }
         }
         stage("Comenzando despliegue") {
