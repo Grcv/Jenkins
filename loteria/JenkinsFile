@@ -69,23 +69,23 @@ pipeline {
                 }
             }
         }
-        stage('Ejecutar ngrok') {
-            steps {
-                dir('app') {
-                    sh '''
-                        # Iniciar screen y ejecutar ngrok redirigiendo la salida
-                        screen -dmS ngrok bash -c "ngrok http 5000 > ngrok.log 2>&1"
+        // stage('Ejecutar ngrok') {
+        //     steps {
+        //         dir('app') {
+        //             sh '''
+        //                 # Iniciar screen y ejecutar ngrok redirigiendo la salida
+        //                 screen -dmS ngrok bash -c "ngrok http 5000 > ngrok.log 2>&1"
                 
-                        # Esperar un momento para que ngrok arranque
-                        sleep 5
+        //                 # Esperar un momento para que ngrok arranque
+        //                 sleep 5
                 
-                        # Imprimir la salida de ngrok
-                        echo "Salida de ngrok:"
-                        cat ngrok.log
-                    '''
-                }
-            }
-        }
+        //                 # Imprimir la salida de ngrok
+        //                 echo "Salida de ngrok:"
+        //                 cat ngrok.log
+        //             '''
+        //         }
+        //     }
+        // }
     }
 
     post {
