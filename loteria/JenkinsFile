@@ -4,19 +4,19 @@ pipeline {
         TAG = "${env.BUILD_NUMBER}"
     }
     stages {
-        stage('Eliminar Screen') {
-            steps {
-                dir('app') {
-                    sh '''
-                        if screen -list | grep -q "ngrok"; then
-                            screen -S ngrok -X quit
-                        else
-                            echo "No hay screen 'ngrok' corriendo. Continuando..."
-                        fi
-                    '''
-                }
-            }
-        }
+        // stage('Eliminar Screen') {
+        //     steps {
+        //         dir('app') {
+        //             sh '''
+        //                 if screen -list | grep -q "ngrok"; then
+        //                     screen -S ngrok -X quit
+        //                 else
+        //                     echo "No hay screen 'ngrok' corriendo. Continuando..."
+        //                 fi
+        //             '''
+        //         }
+        //     }
+        // }
         stage('Limpiar contenedores Docker') {
             steps {
                 sh '''
