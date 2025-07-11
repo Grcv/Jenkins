@@ -49,13 +49,6 @@ pipeline {
                 }
             }
         }
-        stage('Ejecutar ngrok ') {
-            steps {
-                dir('app') {
-                    sh 'ngrok http 4000'
-                }
-            }
-        }
     }
 
     post {
