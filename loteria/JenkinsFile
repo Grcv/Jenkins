@@ -4,10 +4,16 @@ pipeline {
         TAG = "${env.BUILD_NUMBER}"
     }
     stages {
-        stage('Eliminar Screen ') {
+        stage('Eliminar Screen') {
             steps {
                 dir('app') {
-                    sh 'screen -S ngrok -X quit'
+                    sh '''
+                        if screen -list | grep -q "ngrok"; then
+                            screen -S ngrok -X quit
+                        else
+                            echo "No hay screen 'ngrok' corriendo. Continuando..."
+                        fi
+                    '''
                 }
             }
         }
