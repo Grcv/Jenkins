@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'REMOTE_HOST', defaultValue: 'ec2-54-209-122-49.compute-1.amazonaws.com', description: 'IP del servidor remoto para desplegar')
+        string(name: 'REMOTE_HOST', defaultValue: 'ec2-54-158-26-151.compute-1.amazonaws.com', description: 'IP del servidor remoto para desplegar')
         string(name: 'PORT', defaultValue: '8080', description: 'Puerto del servidor remoto para desplegar')
     }
 
