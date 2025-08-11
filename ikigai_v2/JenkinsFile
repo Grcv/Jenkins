@@ -24,7 +24,9 @@ pipeline {
         stage('Construir imágenes Docker') {
             steps {
                 dir('ikigai_v2') {
-                    sh 'docker build -t ikigai-vocacional .'
+                    sh '''
+                    cd V2
+                    docker build -t ikigai-vocacional .'''
                 }
             }
         }
