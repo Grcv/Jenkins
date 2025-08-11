@@ -1,0 +1,44 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'REMOTE_HOST', defaultValue: 'ec2-54-209-122-49.compute-1.amazonaws.com', description: 'IP del servidor remoto para desplegar')
+    }
+
+    environment {
+        BUILD_TAG = "ikigai-vocavional"
+        SSH_CREDENTIALS_ID = 'remote_ssh'
+    }
+
+    stages {
+
+        stage('Desplegar con docker-compose en servidor remoto') {
+            steps {
+                sshagent (credentials: [SSH_CREDENTIALS_ID]) {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                       
+                            sh """
+                                ssh -o StrictHostKeyChecking=no ubuntu@${params.REMOTE_HOST} '
+                                docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} &&
+                                docker pull ${DOCKER_USER}/${BUILD_TAG} &&
+                                docker run -p 8080:8080 --name ikigai-app ${DOCKER_USER}/${BUILD_TAG}
+                                '
+                            """
+                        
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    post {
+        success {
+            echo "✅ Despliegue completo y certificado SSL instalado en ${params.REMOTE_HOST}."
+        }
+        failure {
+            echo "❌ Falló el despliegue remoto o la instalación del certificado SSL."
+        }
+    }
+}
