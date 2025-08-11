@@ -1,0 +1,58 @@
+pipeline {
+    agent any
+    environment {
+        DOCKER_USER = 'gerardocastro'
+        DOCKER_REGISTRY = 'https://index.docker.io/v1/'
+        DOCKER_CREDENTIALS_ID = 'dockerhub'
+        TAG = "${env.BUILD_NUMBER}"
+    }
+    stages {
+
+        stage("Comenzando despliegue"){
+            steps{
+                echo "Comenzando construccion y subida de imagenes"
+            }
+        }
+        stage('Clonar Repositorios Secundarios') {
+            steps {
+                dir('ikigai_v2') {
+                    git credentialsId: 'github_credentials', url: 'https://github.com/Grcv/ikigai_v2.git', branch: 'main'
+                }
+            }
+        }
+
+        stage('Construir imágenes Docker') {
+            steps {
+                dir('ikigai_v2') {
+                    sh 'docker build -t ikigai-vocacional .'
+                }
+            }
+        }
+
+        stage('Login y Push a Docker Hub') {
+            steps {
+                dir('app') {
+                    script {
+                        docker.withRegistry(DOCKER_REGISTRY, DOCKER_CREDENTIALS_ID) {
+                            sh """
+                                docker tag ikigai-vocacional ${DOCKER_USER}/ikigai-vocacional:latest
+                                docker push ${DOCKER_USER}/ikigai-vocacional:latest
+                            """
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+    post {
+        success {
+            echo '✅ Construcción y subida a Docker Hub exitosa.'
+            deleteDir()
+        }
+        failure {
+            echo '❌ Falló la construcción o subida a Docker Hub.'
+            deleteDir()
+        }
+    }
+}
