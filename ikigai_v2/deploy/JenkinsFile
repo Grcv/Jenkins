@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        BUILD_TAG = "ikigai-vocavional"
+        BUILD_TAG = "ikigai-vocacional"
         SSH_CREDENTIALS_ID = 'remote_ssh'
     }
 
