@@ -23,7 +23,7 @@ pipeline {
                                 docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} &&
                                 docker rm -f ikigai-app || true &&
                                 docker pull ${DOCKER_USER}/${BUILD_TAG} &&
-                                docker run -p  ${params.PORT}:8080 --name ikigai-app ${DOCKER_USER}/${BUILD_TAG}
+                                docker run -d -p  ${params.PORT}:8080 --name ikigai-app ${DOCKER_USER}/${BUILD_TAG}
                                 '
                             """
                         
