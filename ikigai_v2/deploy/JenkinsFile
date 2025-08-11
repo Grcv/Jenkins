@@ -12,27 +12,21 @@ pipeline {
     }
 
     stages {
-
-        stage('Desplegar con docker-compose en servidor remoto') {
+        stage('Desplegar con docker en servidor remoto') {
             steps {
                 sshagent (credentials: [SSH_CREDENTIALS_ID]) {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                       
-                            sh """
-                                
-                                docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} &&
-                                docker rm -f ikigai-app || true &&
-                                docker pull ${DOCKER_USER}/${BUILD_TAG} &&
-                                docker run -d -p  ${params.PORT}:8080 --name ikigai-app ${DOCKER_USER}/${BUILD_TAG}
-                                '
-                            """
-                        
+                        sh """
+                            ssh -o StrictHostKeyChecking=no ubuntu@${params.REMOTE_HOST} \\
+                            "echo '${DOCKER_PASS}' | docker login -u '${DOCKER_USER}' --password-stdin && \\
+                             docker rm -f ikigai-app || true && \\
+                             docker pull ${DOCKER_USER}/${BUILD_TAG} && \\
+                             docker run -d -p ${params.PORT}:8080 --name ikigai-app ${DOCKER_USER}/${BUILD_TAG}"
+                        """
                     }
                 }
             }
         }
-
-
     }
 
     post {
