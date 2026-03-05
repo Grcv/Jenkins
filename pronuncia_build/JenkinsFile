@@ -32,7 +32,7 @@ pipeline {
                     mkdir -p app/pronuncia_frontend
                     mkdir -p app/pronuncia_backend
                     cp pronuncia_build/docker-compose.yml app/
-                    cp -r pronuncia_frontend_repo/vocab_app/* app/pronuncia_frontend/
+                    cp -r pronuncia_frontend_repo/vocab-app/* app/pronuncia_frontend/
                     cp -r pronuncia_backend_repo/english_vocab/* app/pronuncia_backend/
                     cp -r media_files_repo/media/ app/pronuncia_backend/
                     cp -r media_files_repo/media/csv/* app/pronuncia_backend/english_vocab/vocubulary/management/commands
