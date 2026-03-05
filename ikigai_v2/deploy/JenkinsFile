@@ -31,10 +31,10 @@ pipeline {
 
     post {
         success {
-            echo "✅ Despliegue completo y certificado SSL instalado en ${params.REMOTE_HOST}."
+            echo "✅ Despliegue completo  en ${params.REMOTE_HOST}."
         }
         failure {
-            echo "❌ Falló el despliegue remoto o la instalación del certificado SSL."
+            echo "❌ Falló el despliegue remoto ."
         }
     }
 }

@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    restart: always
+    ports:
+      - "4000:4000"  # SSR con Express corre en el puerto 4000
+    depends_on:
+      - backend
+    networks:
+      - app-net
+
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    restart: always
+    ports:
+      - "8000:8000"
+    networks:
+      - app-net
+
+  postgres:
+    image: postgres:16
+    container_name: postgres-db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-net
+
+volumes:
+  postgres_data:
+
+networks:
+  app-net:
+    driver: bridge
