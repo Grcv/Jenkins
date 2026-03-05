@@ -35,7 +35,7 @@ pipeline {
                     cp -r pronuncia_frontend_repo/vocab-app/* app/pronuncia_frontend/
                     cp -r pronuncia_backend_repo/english_vocab/* app/pronuncia_backend/
                     cp -r media_files_repo/media/ app/pronuncia_backend/
-                    cp -r media_files_repo/csv/* app/pronuncia_backend/english_vocab/vocubulary/management/commands
+                    cp -r media_files_repo/csv/* app/pronuncia_backend/vocubulary/management/commands
                 '''
             }
         }
