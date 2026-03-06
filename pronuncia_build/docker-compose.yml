@@ -4,7 +4,7 @@ services:
   frontend:
     build:
       context: ./pronuncia_frontend
-    container_name: frontend
+    container_name: pronuncia_frontend
     restart: always
     ports:
       - "80:80"  # SSR con Express corre en el puerto 4000
@@ -16,7 +16,7 @@ services:
   backend:
     build:
       context: ./pronuncia_backend
-    container_name: backend
+    container_name: pronuncia_backend
     restart: always
     ports:
       - "8100:8000"
