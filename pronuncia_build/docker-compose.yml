@@ -25,7 +25,7 @@ services:
 
   postgres:
     image: postgres:16
-    container_name: postgres-db
+    container_name: postgres-database
     restart: always
     environment:
       POSTGRES_USER: admin
