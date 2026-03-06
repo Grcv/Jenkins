@@ -1,5 +1,13 @@
 pipeline {
     agent any
+
+    parameters {
+        string(name: 'REMOTE_HOST', defaultValue: 'ec2-54-209-122-49.compute-1.amazonaws.com', description: 'IP del servidor remoto para desplegar')
+        string(name: 'SMTP_SERVER', defaultValue: 'smtp.zoho.com', description: 'Dominio servidor de email')
+        number(name: 'SMTP_PORT', defaultValue: 587, description: 'Puerto servidor de email')
+        string(name: 'ADMIN_EMAIL', defaultValue: 'acerosaguilar16@gmail.com', description: 'Email de administrador')
+    }
+
     environment {
         DOCKER_USER = 'gerardocastro'
         DOCKER_REGISTRY = 'https://index.docker.io/v1/'
