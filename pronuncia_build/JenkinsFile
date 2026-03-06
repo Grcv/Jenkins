@@ -43,6 +43,11 @@ pipeline {
         stage('Construir imágenes Docker') {
             steps {
                 dir('app') {
+                   script {
+                        docker.withRegistry(DOCKER_REGISTRY, DOCKER_CREDENTIALS_ID) {
+                            sh 'docker compose build'
+                        }
+                    }
                     sh 'docker compose build'
                 }
             }
