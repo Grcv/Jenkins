@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  frontend:
+  pronuncia_frontend:
     build:
       context: ./pronuncia_frontend
     container_name: pronuncia_frontend
@@ -13,7 +13,7 @@ services:
     networks:
       - pronuncia-net
 
-  backend:
+  pronuncia_backend:
     build:
       context: ./pronuncia_backend
     container_name: pronuncia_backend
