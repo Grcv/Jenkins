@@ -3,7 +3,7 @@ version: '3.8'
 services:
   frontend:
     build:
-      context: ./frontend
+      context: ./pronuncia_frontend
     container_name: frontend
     restart: always
     ports:
@@ -15,7 +15,7 @@ services:
 
   backend:
     build:
-      context: ./backend
+      context: ./pronuncia_backend
     container_name: backend
     restart: always
     ports:
