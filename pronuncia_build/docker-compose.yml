@@ -16,6 +16,12 @@ services:
   backend:
     build:
       context: ./pronuncia_backend
+    environment:
+      - SMTP_SERVER=${SMTP_SERVER}
+      - SMTP_PORT=${SMTP_PORT}
+      - ZOHO_USER=${ZOHO_USER}
+      - ZOHO_PASS=${ZOHO_PASS}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
     container_name: pronuncia_backend
     restart: always
     ports:
