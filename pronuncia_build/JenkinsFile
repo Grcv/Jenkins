@@ -5,6 +5,7 @@ pipeline {
         string(name: 'SMTP_SERVER', defaultValue: 'smtp.zoho.com', description: 'Dominio servidor de email')
         string(name: 'SMTP_PORT', defaultValue: '587', description: 'Puerto servidor de email')
         string(name: 'ADMIN_EMAIL', defaultValue: 'gerardorcastrov@gmail.com', description: 'Email de administrador')
+        string(name: 'DOMAIN', defaultValue: '192.168.1.100', description: 'Domain')
     }
 
     environment {
@@ -86,6 +87,7 @@ pipeline {
                             SMTP_USER=${ZOHO_USER} \
                             SMTP_PASSWORD=${ZOHO_PASS} \
                             ADMIN_EMAIL=${params.ADMIN_EMAIL} \
+                            DOMAIN=${params.DOMAIN} \
                             docker compose up -d
                         """
                     }

@@ -22,6 +22,7 @@ services:
       - ZOHO_USER=${ZOHO_USER}
       - ZOHO_PASS=${ZOHO_PASS}
       - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - DOMAIN=${DOMAIN}
     container_name: pronuncia_backend
     restart: always
     ports:
