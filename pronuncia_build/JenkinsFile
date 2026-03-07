@@ -51,18 +51,25 @@ pipeline {
         stage('Construir imágenes Docker') {
             steps {
                 dir('app') {
-                   script {
+                    script {
                         docker.withRegistry(DOCKER_REGISTRY, DOCKER_CREDENTIALS_ID) {
-                            sh """
-                                SMTP_SERVER=${params.SMTP_SERVER} \
-                                SMTP_PORT=${params.SMTP_PORT} \
-                                SMTP_USER=${ZOHO_USER} \
-                                SMTP_PASSWORD=${ZOHO_PASS} \
-                                ADMIN_EMAIL=${params.ADMIN_EMAIL} \
-                                DOMAIN=${params.DOMAIN} \
-                                docker compose build
-                            
-                            """
+                            withCredentials([
+                                usernamePassword(
+                                    credentialsId: 'zoho-smtp',
+                                    usernameVariable: 'ZOHO_USER',
+                                    passwordVariable: 'ZOHO_PASS'
+                                )
+                            ]) {
+                                sh """
+                                    SMTP_SERVER=${params.SMTP_SERVER} \
+                                    SMTP_PORT=${params.SMTP_PORT} \
+                                    ZOHO_USER=${ZOHO_USER} \
+                                    ZOHO_PASS=${ZOHO_PASS} \
+                                    ADMIN_EMAIL=${params.ADMIN_EMAIL} \
+                                    DOMAIN=${params.DOMAIN} \
+                                    docker compose build
+                                """
+                            }
                         }
                     }
                 }
@@ -88,13 +95,19 @@ pipeline {
 
         stage('Levantar contenedores localmente') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'zoho-smtp', usernameVariable: 'ZOHO_USER', passwordVariable: 'ZOHO_PASS')]) {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'zoho-smtp',
+                        usernameVariable: 'ZOHO_USER',
+                        passwordVariable: 'ZOHO_PASS'
+                    )
+                ]) {
                     dir('app') {
                         sh """
                             SMTP_SERVER=${params.SMTP_SERVER} \
                             SMTP_PORT=${params.SMTP_PORT} \
-                            SMTP_USER=${ZOHO_USER} \
-                            SMTP_PASSWORD=${ZOHO_PASS} \
+                            ZOHO_USER=${ZOHO_USER} \
+                            ZOHO_PASS=${ZOHO_PASS} \
                             ADMIN_EMAIL=${params.ADMIN_EMAIL} \
                             DOMAIN=${params.DOMAIN} \
                             docker compose up -d
