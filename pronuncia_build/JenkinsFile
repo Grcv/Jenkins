@@ -3,7 +3,7 @@ pipeline {
 
     parameters {
         string(name: 'SMTP_SERVER', defaultValue: 'smtp.zoho.com', description: 'Dominio servidor de email')
-        string(name: 'SMTP_PORT', defaultValue: 587, description: 'Puerto servidor de email')
+        string(name: 'SMTP_PORT', defaultValue: '587', description: 'Puerto servidor de email')
         string(name: 'ADMIN_EMAIL', defaultValue: 'gerardorcastrov@gmail.com', description: 'Email de administrador')
     }
 
