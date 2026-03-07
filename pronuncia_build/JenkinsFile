@@ -78,8 +78,17 @@ pipeline {
 
         stage('Levantar contenedores localmente') {
             steps {
-                dir('app') {
-                    sh 'docker compose up -d'
+                withCredentials([usernamePassword(credentialsId: 'zoho-smtp', usernameVariable: 'ZOHO_USER', passwordVariable: 'ZOHO_PASS')]) {
+                    dir('app') {
+                        sh """
+                            SMTP_SERVER=${params.SMTP_SERVER} \
+                            SMTP_PORT=${params.SMTP_PORT} \
+                            SMTP_USER=${ZOHO_USER} \
+                            SMTP_PASSWORD=${ZOHO_PASS} \
+                            ADMIN_EMAIL=${params.ADMIN_EMAIL} \
+                            docker compose up -d
+                        """
+                    }
                 }
             }
         }
