@@ -15,7 +15,7 @@ services:
       - pronuncia-net
 
   backend:
-    image: app_pronuncia_frontend
+    image: app_pronuncia_backend
     build:
       context: ./pronuncia_backend
     environment:
