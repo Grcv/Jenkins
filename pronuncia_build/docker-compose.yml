@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   frontend:
+    image: app_pronuncia_frontend
     build:
       context: ./pronuncia_frontend
     container_name: pronuncia_frontend
@@ -14,6 +15,7 @@ services:
       - pronuncia-net
 
   backend:
+    image: app_pronuncia_frontend
     build:
       context: ./pronuncia_backend
     environment:
