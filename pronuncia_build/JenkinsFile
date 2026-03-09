@@ -67,7 +67,6 @@ pipeline {
                                     ZOHO_PASS=${ZOHO_PASS} \
                                     ADMIN_EMAIL=${params.ADMIN_EMAIL} \
                                     DOMAIN=${params.DOMAIN} \
-                                    docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} &&
                                     docker compose build
                                 """
                             }
