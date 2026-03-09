@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    options {
+        skipDefaultCheckout(true)
+    }
+
     parameters {
         string(name: 'SMTP_SERVER', defaultValue: 'smtp.zoho.com', description: 'Dominio servidor de email')
         string(name: 'SMTP_PORT', defaultValue: '587', description: 'Puerto servidor de email')
@@ -15,6 +19,12 @@ pipeline {
         TAG = "${env.BUILD_NUMBER}"
     }
     stages {
+        stage('Checkout Code') {
+            steps {
+                deleteDir()
+                checkout scm
+            }
+        }
 
         stage("Comenzando despliegue"){
             steps{
