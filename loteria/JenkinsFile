@@ -25,7 +25,7 @@ pipeline {
             }
         }
 
-        stage('Delete pronuncia images') {
+        stage('Delete loteria images') {
             steps {
                 sh '''
                 docker images --format "{{.Repository}} {{.ID}}" | grep loteria | awk '{print $2}' | xargs -r docker rmi -f

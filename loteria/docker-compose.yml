@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   frontend:
+    image: app_loteria_frontend
     build:
       context: ./frontend
     container_name: frontend_loteria
@@ -14,6 +15,7 @@ services:
       - app-net
 
   backend:
+    image: app_loteria_backend
     build:
       context: ./backend
     container_name: backend_loteria
