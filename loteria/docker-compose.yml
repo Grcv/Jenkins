@@ -8,7 +8,7 @@ services:
     container_name: frontend_loteria
     restart: always
     ports:
-      - "4000:4000"  # SSR con Express corre en el puerto 4000
+      - "4000:80"  # SSR con Express corre en el puerto 4000
     depends_on:
       - backend
     networks:
