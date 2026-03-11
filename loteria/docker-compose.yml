@@ -4,7 +4,7 @@ services:
   frontend:
     build:
       context: ./frontend
-    container_name: frontend
+    container_name: frontend_loteria
     restart: always
     ports:
       - "4000:4000"  # SSR con Express corre en el puerto 4000
@@ -16,7 +16,7 @@ services:
   backend:
     build:
       context: ./backend
-    container_name: backend
+    container_name: backend_loteria
     restart: always
     ports:
       - "8000:8000"

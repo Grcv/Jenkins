@@ -18,13 +18,22 @@ pipeline {
         DOCKER_CREDENTIALS_ID = 'dockerhub'
         TAG = "${env.BUILD_NUMBER}"
     }
-    stages {
-        stage('Checkout Code') {
-            steps {
-                deleteDir()
-                checkout scm
+        stages {
+            stage('Checkout Code') {
+                steps {
+                    deleteDir()
+                    checkout scm
+                }
             }
-        }
+
+        stage('Delete running containers pronuncia') {
+            steps {
+                sh '''
+                docker ps -a --format "{{.ID}} {{.Image}}" | grep pronuncia | awk '{print $1}' | xargs -r docker rm -f
+                docker volume rm app_postgres_data
+                '''
+            }
+        }        
 
         stage("Comenzando despliegue"){
             steps{
