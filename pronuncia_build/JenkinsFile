@@ -31,10 +31,16 @@ pipeline {
                 sh '''
                 docker ps -a --format "{{.ID}} {{.Image}}" | grep pronuncia | awk '{print $1}' | xargs -r docker rm -f
                 docker ps -a --format "{{.ID}} {{.Image}}" | grep postgres | awk '{print $1}' | xargs -r docker rm -f
-                docker volume rm app_postgres_data
+
+                # eliminar volumen solo si existe
+                if docker volume inspect app_postgres_data >/dev/null 2>&1; then
+                    docker volume rm app_postgres_data
+                else
+                    echo "Volume app_postgres_data does not exist"
+                fi
                 '''
             }
-        }   
+}
 
         stage('Delete pronuncia images') {
             steps {
