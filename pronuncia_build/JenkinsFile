@@ -33,7 +33,15 @@ pipeline {
                 docker volume rm app_postgres_data
                 '''
             }
-        }        
+        }   
+
+        stage('Delete pronuncia images') {
+            steps {
+                sh '''
+                docker images --format "{{.Repository}} {{.ID}}" | grep pronuncia | awk '{print $2}' | xargs -r docker rmi -f
+                '''
+            }
+        }     
 
         stage("Comenzando despliegue"){
             steps{
