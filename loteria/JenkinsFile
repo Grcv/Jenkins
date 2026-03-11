@@ -52,18 +52,18 @@ pipeline {
         stage('Mover archivos') {
             steps {
                 sh '''
-                    mkdir -p app/frontend
-                    mkdir -p app/backend
-                    cp loteria/docker-compose.yml app/
-                    cp -r frontend_repo/prediccion_loteria/* app/frontend/
-                    cp -r backend_repo/loteria_backend/* app/backend/
+                    mkdir -p app_loteria/frontend
+                    mkdir -p app_loteria/backend
+                    cp loteria/docker-compose.yml app_loteria/
+                    cp -r frontend_repo/prediccion_loteria/* app_loteria/frontend/
+                    cp -r backend_repo/loteria_backend/* app_loteria/backend/
                 '''
             }
         }
 
         stage('Construir imágenes Docker') {
             steps {
-                dir('app') {
+                dir('app_loteria') {
                     sh 'docker compose build'
                 }
             }
@@ -71,7 +71,7 @@ pipeline {
 
         stage('Levantar contenedores localmente') {
             steps {
-                dir('app') {
+                dir('app_loteria') {
                     sh 'docker compose up -d'
                 }
             }
