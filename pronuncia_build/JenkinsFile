@@ -148,7 +148,7 @@ pipeline {
                         passwordVariable: 'ZOHO_PASS'
                     )
                 ]) {
-                    dir('app') {
+                    dir('app_pronuncia') {
                         sh """
                             SMTP_SERVER=${params.SMTP_SERVER} \
                             SMTP_PORT=${params.SMTP_PORT} \
