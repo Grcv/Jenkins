@@ -20,7 +20,7 @@ pipeline {
         stage('Limpiar contenedores Docker') {
             steps {
                 sh '''
-                    docker ps -a --format "{{.ID}} {{.Image}}" | grep loteria | awk '{print $1}' | xargs -r docker rm -f
+                    docker ps -a --format "{{.ID}} {{.Image}} {{.Names}}" | grep loteria | awk '{print $1}' | xargs -r docker rm -f
                 '''
             }
         }
