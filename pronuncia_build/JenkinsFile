@@ -32,10 +32,10 @@ pipeline {
                 docker ps -a --format "{{.ID}} {{.Image}} {{.Names}}" | grep pronuncia | awk '{print $1}' | xargs -r docker rm -f
 
                 # eliminar volumen solo si existe
-                if docker volume inspect app_postgres_data >/dev/null 2>&1; then
-                    docker volume rm app_postgres_data
+                if docker volume inspect app_pronuncia_postgres_data >/dev/null 2>&1; then
+                    docker volume rm app_pronuncia_postgres_data
                 else
-                    echo "Volume app_postgres_data does not exist"
+                    echo "Volume app_pronuncia_postgres_data does not exist"
                 fi
                 '''
             }
