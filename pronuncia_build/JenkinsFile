@@ -29,8 +29,7 @@ pipeline {
         stage('Delete running containers pronuncia') {
             steps {
                 sh '''
-                docker ps -a --format "{{.ID}} {{.Image}}" | grep pronuncia | awk '{print $1}' | xargs -r docker rm -f
-                docker ps -a --format "{{.ID}} {{.Image}}" | grep postgres | awk '{print $1}' | xargs -r docker rm -f
+                docker ps -a --format "{{.ID}} {{.Image}} {{.Names}}" | grep pronuncia | awk '{print $1}' | xargs -r docker rm -f
 
                 # eliminar volumen solo si existe
                 if docker volume inspect app_postgres_data >/dev/null 2>&1; then
