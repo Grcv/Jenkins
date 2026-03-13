@@ -11,6 +11,8 @@ services:
       - "80:80"  # SSR con Express corre en el puerto 4000
     depends_on:
       - backend
+    volumes:
+      - media:/app_pronuncia/pronuncia_backend/media/
     networks:
       - pronuncia-net
 
@@ -29,6 +31,8 @@ services:
     restart: always
     ports:
       - "8100:8000"
+    volumes:
+      - media:/app_pronuncia/pronuncia_backend/media/
     networks:
       - pronuncia-net
 
@@ -49,6 +53,7 @@ services:
 
 volumes:
   postgres_data:
+  media:
 
 networks:
   pronuncia-net:
