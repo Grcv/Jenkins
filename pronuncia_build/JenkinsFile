@@ -75,7 +75,7 @@ pipeline {
                     cp pronuncia_build/docker-compose.yml app_pronuncia/
                     cp -r pronuncia_frontend_repo/vocab-app/* app_pronuncia/pronuncia_frontend/
                     cp -r pronuncia_backend_repo/english_vocab/* app_pronuncia/pronuncia_backend/
-                    cp -r media_files_repo/media/ app_pronuncia/pronuncia_backend/
+                    cp -r media_files_repo/uploads/ app_pronuncia/pronuncia_backend/
                     cp -r media_files_repo/csv/* app_pronuncia/pronuncia_backend/vocabulary/management/commands/
                 '''
             }
