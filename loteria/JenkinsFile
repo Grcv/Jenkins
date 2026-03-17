@@ -17,6 +17,14 @@ pipeline {
         //         }
         //     }
         // }
+        stage('Checkout Code') {
+            steps {
+                deleteDir()
+                checkout scm
+            }
+        }
+
+
         stage('Limpiar contenedores Docker') {
             steps {
                 sh '''

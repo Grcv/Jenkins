@@ -18,13 +18,13 @@ pipeline {
         DOCKER_CREDENTIALS_ID = 'dockerhub'
         TAG = "${env.BUILD_NUMBER}"
     }
-        stages {
-            stage('Checkout Code') {
-                steps {
-                    deleteDir()
-                    checkout scm
-                }
+    stages {
+        stage('Checkout Code') {
+            steps {
+                deleteDir()
+                checkout scm
             }
+        }
 
         stage('Delete running containers pronuncia') {
             steps {
@@ -39,7 +39,7 @@ pipeline {
                 fi
                 '''
             }
-}
+        }
 
         stage('Delete pronuncia images') {
             steps {
